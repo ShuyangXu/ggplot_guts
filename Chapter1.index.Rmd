@@ -1,0 +1,46 @@
+---
+title: "ggplot2 guts"
+subtitle: "Chapter 1: themes that effect size"
+author: Shuyang Xu
+output:
+  html_document : 
+    number_sections: true
+    toc: true
+    toc_depth: 2
+    toc_float: true
+date: "Last compiled on `r format(Sys.time(), '%d %B, %Y')`"
+---
+
+<style type="text/css"> .main-container { min-width: 90%; max-width: 100%; } </style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(base.dir = getwd(),
+                     child.path = "Chapter1/")
+is.run <- TRUE
+```
+
+
+```{r child = "00.initial_data.Rmd"}
+```
+
+```{r child = if(is.run) "01.axis.Rmd"}
+```
+
+```{r child = if(is.run) "02.strip.Rmd"}
+```
+
+```{r child = if(is.run) "03.panel.Rmd"}
+```
+
+```{r child = if(is.run) "04.legend.Rmd"}
+```
+
+```{r child = if (is.run) "05.plot.Rmd"}
+```
+
+```{r child = if (0) "00.misc.Rmd"}
+```
+
+```{r child = "00.Appendix.Rmd"}
+```

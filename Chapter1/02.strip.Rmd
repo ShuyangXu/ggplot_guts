@@ -1,0 +1,91 @@
+# strip
+
+## strip.text
+```{r strip.text, eval=F}
+p + theme(
+    strip.text   = element_text(size = 20, margin = margin(1,1,1,1,"line")),
+#   strip.text.x = element_text(),
+#   strip.text.y = element_text()
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<strip.text>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width = "60%"}
+pl
+```
+
+## strip.switch.pad
+
+`strip.placement` controls strips placing `inside` or `outside` `axis.text` grobs (including `axis.text`, `axis.ticks` and `axis.line`).
+
+And `strip.switch.pad.*` only works for the `outside` strips, and controls the width of the gap between strips and `axis.text` grobs.
+
+```{r strip.switch.pad.1, eval=F}
+p + theme(strip.text = element_text(size = 20)) +
+  theme(
+#   strip.placement   = NULL,
+    strip.placement.x = "outside",
+    strip.placement.y = NULL
+  ) +
+  theme(
+    strip.switch.pad.grid = unit(1, "line"),
+#   strip.switch.pad.wrap = unit(1, "line") # for facet_wrap
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<strip.switch.pad.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width = "60%"}
+pl
+```
+
+```{r strip.switch.pad.2, eval=F}
+p + facet_wrap(ab ~ xy) +
+  theme(strip.text = element_text(size = 20)) +
+  theme(
+    strip.placement = "outside",
+    strip.switch.pad.wrap = unit(1, "line")
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<strip.switch.pad.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width = "60%"}
+pl
+```
+
+<details><summary>ps. `labeller(.multi_line)` can collapse strips of the same side.</summary>
+```{r strip.switch.pad.3, eval=F}
+p + facet_wrap(ab ~ xy,
+               labeller = labeller(.multi_line = F)) +
+  theme(strip.text = element_text(size = 20)) +
+  theme(
+    strip.placement = "outside",
+    strip.switch.pad.wrap = unit(1, "line")
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<strip.switch.pad.3>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width = "60%"}
+pl
+```
+</details>
+
+## summary
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(file.path(getwd(), "02.strip.summary.png"))
+```

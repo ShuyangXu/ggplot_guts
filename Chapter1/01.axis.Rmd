@@ -1,0 +1,301 @@
+# axis
+
+## axis.title
+
+:::::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+``` {r, axis.title.1, eval = FALSE}
+p + theme(
+    axis.title          = element_text(size = 20, margin = margin(1,1,1,1,"line"))
+#   axis.title.x        = element_text(),
+#   axis.title.x.top    = element_text(),
+#   axis.title.x.bottom = element_text(),
+#   axis.title.y        = element_text(),
+#   axis.title.y.left   = element_text(),
+#   axis.title.y.right  = element_text(),
+  )
+```
+* you may find `axis.title.*`, `axis.title.*.*` do not inherit `element_text(margin)` from `axis.title`. 
+* it's because that in [default theme](#ggplot2-default-themes), `axis.title.x` and `axis.title.y` have called `element_text(margin)` already
+* and which result in a gap between `axis.title` and `axis.text` in size `unit(11 / 4, "pt")`.
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.title.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::::
+
+
+:::::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+``` {r, axis.title.2, eval = FALSE}
+p + theme(
+#   axis.title          = element_text(),
+    axis.title.x        = element_text(size = 20, margin = margin(1,1,1,1,"line")),
+#   axis.title.x.top    = element_text(),
+#   axis.title.x.bottom = element_text(),
+    axis.title.y        = element_text(size = 20, margin = margin(1,1,1,1,"line"))
+#   axis.title.y.left   = element_text(),
+#   axis.title.y.right  = element_text(),
+  )
+```
+* also, you may find `axis.title.x.top` dose not inherit `element_text(margin)` from `axis.title.x` 
+* and `axis.title.y.right` dose not inherit that from `axis.title.y`.
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.title.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::::
+
+
+:::::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+``` {r, axis.title.3, eval = FALSE}
+p + theme(
+    axis.title          = element_text(size = 20),
+    axis.title.x        = element_text(margin = margin(1,1,1,1,"line")),
+    axis.title.x.top    = element_text(margin = margin(1,1,1,1,"line")),
+#   axis.title.x.bottom = element_text(),
+    axis.title.y        = element_text(margin = margin(1,1,1,1,"line")),
+#   axis.title.y.left   = element_text(),
+    axis.title.y.right  = element_text(margin = margin(1,1,1,1,"line"))
+  )
+```
+* so to change `element_text(margin)`, these `axis.title.**` have to be set explicitly 
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.title.3>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::::
+
+
+## axis.text
+
+:::::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r axis.text.1, eval = FALSE}
+p + theme(
+    axis.text = element_text(size = 20, margin = margin(1,1,1,1,"line"))
+#   axis.text.x        = element_text(),
+#   axis.text.x.top    = element_text(),
+#   axis.text.x.bottom = element_text(),
+#   axis.text.y        = element_text(),
+#   axis.text.y.left   = element_text(),
+#   axis.text.y.right  = element_text()
+  )
+```
+* same as `axis.title`
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.text.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::::
+
+:::::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r axis.text.2, eval = FALSE}
+p + theme(
+    axis.text = element_text(size = 20),
+#   axis.text.x        = element_text(),
+    axis.text.x.top    = element_text(vjust = 1),
+    axis.text.x.bottom = element_text(vjust = 0),
+#   axis.text.y        = element_text(),
+    axis.text.y.left   = element_text(hjust = 0),
+    axis.text.y.right  = element_text(hjust = 1)
+  )
+```
+* and there are also gaps between `axis.text` and `axit.ticks`, which due to [default theme](#ggplot2-default-themes) with default size `unit(0.8 * 11 / 4, "pt")`.
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r, echo = FALSE}
+pl <- {
+  <<axis.text.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+```{r, echo = FALSE, include = FALSE, eval=F}
+w.pt <- grid::convertUnit(unit(wh[1], units = "in"), "bigpts", valueOnly = T)
+h.pt <- grid::convertUnit(unit(wh[2], units = "in"), "bigpts", valueOnly = T)
+dpi <- 300
+w.px <- w.pt * dpi / 72
+h.px <- h.pt * dpi / 72
+geometry <- paste(0.3 * w.px, "x", 0.25 * h.px, "+", 0.03 * w.px, "+", 0.05 * h.px)
+
+fig <- magick::image_graph(width = w.px, height = h.px, res = dpi)
+pl
+dev.off()
+```
+```{r, echo = F}
+#fig <- magick::image_crop(fig, geometry)
+#cowplot::ggdraw() + cowplot::draw_image(fig)
+cut_a_plot(pl, wh, width = c(0.03, 0.3), height = c(0.05, 0.25))
+#rm(w.pt, h.pt, dpi, w.px, h.px, fig, geometry)
+```
+:::
+::::::
+
+## axis.ticks
+`axis.ticks = element_line(size)` only controls the length along axes, and does not effect the size of plot.
+
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r, axis.ticks.1.1, eval = FALSE}
+p + theme(
+    axis.ticks = element_line(size = 10)
+#   axis.ticks.x        = element_line(),
+#   axis.ticks.x.top    = element_line(),
+#   axis.ticks.x.bottom = element_line(),
+#   axis.ticks.y        = element_line(),
+#   axis.ticks.y.left   = element_line(),
+#   axis.ticks.y.right  = element_line()
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.ticks.1.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r, axis.ticks.1.2, eval = FALSE}
+p + theme(
+    axis.ticks = element_line(size = 100)
+#   axis.ticks.x        = element_line(),
+#   axis.ticks.x.top    = element_line(),
+#   axis.ticks.x.bottom = element_line(),
+#   axis.ticks.y        = element_line(),
+#   axis.ticks.y.left   = element_line(),
+#   axis.ticks.y.right  = element_line()
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.ticks.1.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::
+
+To control the length vertically, you need to change `axis.ticks.length`.
+
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r, axis.ticks.2, eval = FALSE}
+p + theme(
+    axis.ticks.length = unit(0.5,"cm") # default unit(11 / 4, "pt")
+#   axis.ticks.length.x        = NULL, 
+#   axis.ticks.length.x.top    = NULL,
+#   axis.ticks.length.x.bottom = NULL,
+#   axis.ticks.length.y        = NULL,
+#   axis.ticks.length.y.left   = NULL,
+#   axis.ticks.length.y.right  = NULL
+  )
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+``` {r, echo = FALSE}
+pl <- {
+  <<axis.ticks.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::
+
+## axis.line
+`axis.line` has no effect on plot size as well.
+
+```{r}
+gt1 <- ggplotGrob(p)
+gt1$heights
+
+p2 <- p + theme(
+    axis.line = element_line(size = 10, linetype = 'dashed')
+#   axis.line.x        = element_line(),
+#   axis.line.x.top    = element_line(),
+#   axis.line.x.bottom = element_line(),
+#   axis.line.y        = element_line(),
+#   axis.line.y.left   = element_line(),
+#   axis.line.y.right  = element_line()
+  )
+gt2 <- ggplotGrob(p2)
+gt2$heights
+```
+``` {r, echo = FALSE}
+wh <- findWH(p2, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, fig.align = 'center', out.width = "60%"}
+p2
+```
+
+
+## summary
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(file.path(getwd(), "01.axis.summary.png"))
+```

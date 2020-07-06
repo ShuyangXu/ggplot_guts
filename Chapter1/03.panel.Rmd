@@ -1,0 +1,41 @@
+# panel
+
+## *panel size*
+
+Unfortunately, unlike the elements mentioned above, the size of panels are not certain. 
+
+The unit of the viewport of the panels are `1NULL`, which means the size of the panels only calculate after the plot is drawn.
+
+They're determined by the size of the window you open or the device you save graphics.
+
+You cannot control the size of panels by setting `theme`.
+
+``` {r, fig.align='center', out.width = "60%", fig.width = 10, fig.height = 10}
+gt <- ggplotGrob(p)
+layout <- gtable:::gtable_layout(gt)
+grid:::grid.show.layout(layout)
+```
+
+
+## panel.spacing
+
+But you can control the gap between each panels.
+
+```{r, panel.1, eval = FALSE}
+p + theme(
+      panel.spacing = unit(1, "line"),
+#     panel.spacing.x = NULL,
+#     panel.spacing.y = NULL
+    )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<panel.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width = "60%"}
+pl
+```
+
+

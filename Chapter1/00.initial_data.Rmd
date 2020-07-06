@@ -1,0 +1,92 @@
+
+<details><summary>A ggplot2 demo</summary>
+```{r echo = 2:9}
+source("ggplot_save.R")
+library(ggplot2)
+library(grid)
+
+dt <- data.frame( num = 1:10,
+                  ab = rep(c("a", "b"), each = 5),
+                  xy = rep(c("x", "y"), length.out = 10),
+                  d = 1:10 / 10 )
+
+p <- ggplot(dt, aes(x = num, y = num, fill = ab, color = xy, size = num, alpha = d)) + 
+  facet_grid(ab ~ xy, scales = "free", switch = "both") + 
+  geom_point()
+
+p <- p + 
+  guides(alpha = guide_legend(title = "Alpha"),
+         size  = guide_legend(title = "Size"),
+         color = guide_legend(title = "Color"),
+         fill  = guide_legend(title = "Fill")
+  ) +
+  labs(title    = "title",
+       subtitle = "subtitle",
+       caption  = "caption",
+#      tag      = "tag",
+       x = "xlab.1",
+       y = "ylab.1"
+  ) +
+  scale_x_continuous(sec.axis = dup_axis(name = "xlab.2")) +
+  scale_y_continuous(sec.axis = dup_axis(name = "ylab.2"))
+```
+</details>
+```{r fig.align='center', echo = F}
+p
+```
+
+<details><summary>in debug style</summary>
+```{r, echo = T}
+p <- p +
+  theme(
+    legend.background = element_rect(fill = "grey", color = "black"),
+    legend.box.background = element_rect(fill = "lightblue", color = "red"),
+    legend.key   = element_rect(fill = "yellow", color = "green"),
+    legend.text  = element_text(debug = TRUE),
+    legend.title = element_text(debug = TRUE)
+  ) +
+  theme(
+    axis.title = element_text(debug = TRUE),
+    axis.text  = element_text(debug = TRUE),
+    axis.line  = element_line(color = "red"),
+  ) +
+  theme(
+    strip.text = element_text(debug = TRUE)
+  ) +
+  theme(
+    plot.margin     = margin(0,0,0,0, "pt"),
+    plot.background = element_rect(fill = "pink"),
+    plot.title    = element_text(debug = TRUE, margin = margin(0,0,0,0, "line")),
+    plot.subtitle = element_text(debug = TRUE, margin = margin(0,0,0,0, "line")),
+    plot.caption  = element_text(debug = TRUE, margin = margin(0,0,0,0, "line")),
+    plot.tag      = element_text(debug = TRUE)
+  ) +
+  theme(
+    panel.background = element_rect(fill = "orange"),
+  )
+```
+</details>
+```{r fig.align='center', echo = F}
+p
+```
+
+```{r, echo = F}
+cut_a_plot <- function(p, wh, width = c(0,1), height = c(0, 1), is.return = FALSE){
+  w.pt <- grid::convertUnit(unit(wh[1], units = "in"), "bigpts", valueOnly = T)
+  h.pt <- grid::convertUnit(unit(wh[2], units = "in"), "bigpts", valueOnly = T)
+  dpi <- 300
+  w.px <- w.pt * dpi / 72
+  h.px <- h.pt * dpi / 72
+  
+  fig <- magick::image_graph(width = w.px, height = h.px, res = dpi)
+  print(p)
+  dev.off()
+  
+  geometry <- paste(width[2] * w.px, "x", height[2] * h.px, "+", width[1] * w.px, "+", height[1] * h.px)
+  
+  fig <- magick::image_crop(fig, geometry)
+  if ( is.return ) return(fig)
+  
+  grid::grid.raster(fig)
+}
+```

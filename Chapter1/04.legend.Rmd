@@ -1,0 +1,433 @@
+# legend
+
+```{r show_legend, echo = FALSE}
+show_legend <- function(p, wh){
+  w.pt <- grid::convertUnit(unit(wh[1], units = "in"), "bigpts", valueOnly = T)
+  h.pt <- grid::convertUnit(unit(wh[2], units = "in"), "bigpts", valueOnly = T)
+  dpi <- 300
+  w.px <- w.pt * dpi / 72
+  h.px <- h.pt * dpi / 72
+  
+  fig <- magick::image_graph(width = w.px, height = h.px, res = dpi)
+  print(p)
+  dev.off()
+  
+  geometry <- paste(1 * w.px, "x", 1 * h.px, "+", 0.66 * w.px, "+", 0 * h.px)
+  
+  fig <- magick::image_crop(fig, geometry)
+  return(fig)
+}
+show_legend <- function(p, wh){
+  cut_a_plot(p, wh, width = c(0.66, 1))
+}
+```
+
+## legend.position
+### in character {-}
+Default `legend.position` is `right`, and also support `left`, `top`, `bottom` and `none`.
+
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r, legend.position.1, eval = FALSE}
+p + theme(legend.position = "left")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.position.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r, legend.position.3, eval = FALSE}
+p + theme(legend.position = "top")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.position.3>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::
+
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r, legend.position.4, eval = FALSE}
+p + theme(legend.position = "bottom")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.position.4>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r, legend.position.2, eval = FALSE}
+p + theme(legend.position = "none")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.position.2>>
+}
+#wh <- findWH(pl, unit = "in", plot.size = unit(250, "bigpts"), is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::
+
+### in numeric vector {-}
+`legend.position` also support a coordinate (two-element numeric vector).
+
+A better practice is using in combination with `legend.justification`.
+
+```{r, legend.position.5, eval = FALSE}
+p + theme(
+  legend.position = c(0.25, 0),
+  legend.justification = c(0, 0) # default "center"
+)
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.position.5>>
+}
+wh <- findWH(pl, unit = "in", plot.size = unit(150,"bigpts"), is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align='center', out.width="60%"}
+pl
+```
+
+* a simple illustration shows how it works :
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(file.path(getwd(), "04.legend.position.png"))
+```
+
+But Comparing to the default layout (left), the legend will no longer be apart of the plot grob tree when using `legend.position` in this way.
+The legend will not contribute to panel calculation (see [*panel size*](#panel-size)).
+
+``` {r, echo = F}
+gt1 <- ggplotGrob(p)
+gt2 <- ggplotGrob(pl)
+layout1 <- gtable:::gtable_layout(gt1)
+layout2 <- gtable:::gtable_layout(gt2)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r, fig.align='center', fig.width = 10, fig.height = 10, echo = F}
+grid:::grid.show.layout(layout1) 
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r, fig.align='center', fig.width = 10, fig.height = 10, echo = F}
+grid:::grid.show.layout(layout2)
+```
+:::
+::::
+
+## legend.box & legend.box.just
+`legend.box` controls the arrangement of multiple legends.
+
+`legend.box.just` controls the justification of each legend within the overall bounding box, when there are multiple legends.
+```{r, legend.box.1, eval = FALSE}
+#default
+p + theme(legend.box = "vertical", legend.box.just = "left")
+```
+```{r, legend.box.2, eval = FALSE}
+p + theme(legend.box = "vertical", legend.box.just = "right")
+```
+```{r, echo = FALSE}
+pl <- {
+  <<legend.box.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align = "center", out.width="60%"}
+pl
+```
+```{r, legend.box.3, eval = FALSE}
+p + theme(legend.box = "horizontal", legend.box.just = "top")
+```
+```{r, echo = FALSE}
+pl <- {
+  <<legend.box.3>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align = "center"}
+pl
+```
+```{r, legend.box.4, eval = FALSE}
+p + theme(legend.box = "horizontal", legend.box.just = "bottom")
+```
+```{r, echo = FALSE}
+pl <- {
+  <<legend.box.4>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE, fig.align = "center"}
+pl
+```
+
+
+## legend.box.spacing 
+The spacing between the plotting area and the legend box.
+
+See more example in [legend.position](#legend.position), show how it effect in different conditions.
+
+```{r, legend.box.spacing, eval = FALSE}
+p + theme(legend.box.spacing = unit(2, "line"))
+# default unit(11, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.box.spacing>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+## legend.box.margin
+Margins around the full legend area. 
+```{r legend.box.margin, eval = FALSE}
+p + theme(legend.box.margin  = margin(2,2,2,2, "line"))
+# default margin(0, 0, 0, 0, "cm")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.box.margin>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+## legend.margin
+The margin around each legend.
+```{r legend.margin, eval = FALSE}
+p + theme(legend.margin = margin(2,2,2,2, "line"))
+# default margin(5.5, 5.5, 5.5, 5.5, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.margin>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+## legend.spacing
+The spacing between legends.
+
+`legend.spacing.x` controls the <strong>horizontal</strong> gaps between `legend.title` and `legend.key`, between `legend.key` and `legend.text` as well as between multi legends.
+
+`legend.spacing.y` controls the <strong>vertical</strong> gaps between `legend.title` and `legend.key`, between `legend.key` and `legend.text` as well as between multi legends.
+
+```{r legend.spacing.1, eval = FALSE}
+pl <- p + guides(
+  size  = guide_legend(title = "Size",  ncol = 3, byrow = TRUE),
+  alpha = guide_legend(title = "Alpha", ncol = 2)
+)
+pl + theme(
+#   legend.spacing   = NULL, # default unit(11, "pt")
+    legend.spacing.x = unit(1, "line"),
+    legend.spacing.y = unit(2, "line")
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.spacing.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+```{r legend.spacing.2, eval = FALSE}
+pl + theme(
+    legend.spacing.x = unit(1, "line"),
+    legend.spacing.y = unit(2, "line"),
+    legend.box = "horizontal"
+  )
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.spacing.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+
+
+## legend.title & legend.text
+```{r legend.title, eval = FALSE}
+p + theme(
+  legend.title = element_text(size = 15, margin = margin(1,1,1,1, "line")),
+  legend.text  = element_text(size = 15, margin = margin(1,1,1,1, "line"))
+)
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.title>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+## legend.key.size
+`legend.key.size` controls the size of legend keys.
+```{r legend.key.size.1, eval = FALSE}
+p + theme(
+    legend.key.size = unit(3, "line") # default unit(1.2, "lines")
+#   legend.key.height = NULL,
+#   legend.key.width  = NULL
+)
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.key.size.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+
+`legend.key.size` only effect the box of legend keys instead of the symbol.
+To resize the symbol inside legend keys, you need to use `guides`.
+<details><summary>example</summary>
+```{r legend.key.size.2, eval = FALSE}
+p + guides(alpha = guide_legend(title = "Alpha", override.aes = list(size = 20) ))
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<legend.key.size.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+:::: {.columns style="display: flex;"}
+::: {.column width="59%"}
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="39%"}
+```{r, fig.dim = wh * c(0.34, 1), echo = FALSE}
+show_legend(pl, wh)
+```
+:::
+::::
+</details>
+
+
+## summary
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(file.path(getwd(), "04.legend.summary.png"))
+```

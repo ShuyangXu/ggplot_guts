@@ -1,0 +1,22 @@
+# Appendix {-} 
+## ggplot2 default themes {-}
+<div id='default_theme'></div>
+```{r, eval=F}
+ggplot2::theme_grey
+```
+<details><summary>details</summary>
+```{r, comment = "", echo=F}
+#formatR::tidy_source(text = deparse(ggplot2::theme_grey))
+ggplot2::theme_grey
+```
+</details>
+
+## session_info {-}
+```{r, eval=F}
+devtools::session_info()
+```
+<details><summary>details</summary>
+```{r, echo = F}
+devtools::session_info()
+```
+</details>

@@ -1,0 +1,137 @@
+# plot
+## plot.margin
+```{r plot.margin, eval=FALSE}
+p + theme(plot.margin = margin(1,1,1,1, "line"))
+# default margin(5.5, 5.5, 5.5, 5.5, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.margin>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.align='center', fig.dim = wh, echo = FALSE, out.width="60%"}
+pl
+```
+
+## plot.title
+```{r plot.title, eval=FALSE}
+p + theme(plot.title = element_text(margin = margin(1,1,1,1, "line"))) 
+# default margin(b = 5.5, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.title>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.align='center', fig.dim = wh, echo = FALSE, out.width="60%"}
+pl
+```
+
+## plot.subtitle
+```{r plot.subtitle, eval=FALSE}
+p + theme(plot.subtitle = element_text(margin = margin(1,1,1,1, "line")))
+# default margin(b = 5.5, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.subtitle>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.align='center', fig.dim = wh, echo = FALSE, out.width="60%"}
+pl
+```
+
+## plot.caption
+```{r plot.caption, eval=FALSE}
+p + theme(plot.caption = element_text(margin = margin(1,1,1,1, "line")))
+# default margin(t = 5.5, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.caption>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.align='center', fig.dim = wh, echo = FALSE, out.width="60%"}
+pl
+```
+
+## plot.tag
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r plot.tag.1, eval=FALSE}
+p + labs(tag = "A")
+# default margin(0, 0, 0, 0, "pt")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.tag.1>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r plot.tag.2, eval=FALSE}
+p + labs(tag = "A") + theme(plot.tag = element_text(margin = margin(1,1,1,1, "line")))
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.tag.2>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::::
+
+:::: {.columns style="display: flex;"}
+::: {.column width="49%"}
+```{r plot.tag.3, eval=FALSE}
+p + labs(tag = "A") +
+  theme(legend.position = "left")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.tag.3>>
+}
+wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh, echo = FALSE}
+pl
+```
+:::
+::: {.column width="2%"}
+\ 
+:::
+::: {.column width="49%"}
+```{r plot.tag.4, eval=FALSE}
+p + labs(tag = "A") +
+  theme(legend.position = "top")
+```
+``` {r, echo = FALSE}
+pl <- {
+  <<plot.tag.4>>
+}
+#wh <- findWH(pl, unit = "in", is.legend.overlap = TRUE, is.square = TRUE)
+```
+```{r, fig.dim = wh * 1.5, echo = FALSE}
+pl
+```
+:::
+::::
+
+## summary
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(file.path(getwd(), "05.plot.summary.png"))
+```
